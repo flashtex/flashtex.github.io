@@ -1,0 +1,2516 @@
+<!DOCTYPE html>
+<html class=" w-mod-ix">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <style>
+        .wf-force-outline-none[tabindex="-1"]:focus {
+            outline: none;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WNGS4SZ3C7"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-WNGS4SZ3C7');
+    </script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>FlashTex: Fast Relightable Mesh Texturing with LightControlNet</title>
+    <link rel="stylesheet" href="images/bootstrap.min.css">
+    <link href="images/css.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="images/Highlight-Clean.css">
+    <link rel="stylesheet" href="images/styles.css">
+
+    <link rel="manifest" href="images/site.webmanifest">
+
+    <meta property="og:site_name" content="FlashTex">
+    <!-- <meta property="og:type" content="video.other"> -->
+    <meta property="og:title" content="FlashTex: Fast Relightable Mesh Texturing with LightControlNet">
+    <!-- <meta property="og:description" content=""> -->
+    <!-- <meta property="og:url" content=""> -->
+    <!-- <meta property="og:image" content="">
+    <meta property="og:video" content=""> -->
+
+    <!-- Twitter Meta Tags -->
+    <!-- <meta name="twitter:card" content="">
+    <meta property="twitter:url" content=""> -->
+    <meta name="twitter:title" content="FlashTex: Fast Relightable Mesh Texturing with LightControlNet">
+    <!-- <meta name="twitter:description" content=""> -->
+    <!-- <meta name="twitter:image" content=""> -->
+    <!-- <meta name="twitter:video" content=""> -->
+
+
+    <script src="images/video_comparison.js"></script>
+    <script type="module" src="images/model-viewer.min.js"></script>
+
+
+</head>
+
+<body>
+
+
+    <!-- <div class="banner">
+      <video class="video lazy" poster="" autoplay="autoplay" loop="" playsinline="" muted="muted">
+        <source data-src="" type="video/mp4" src="">
+      </video>
+    </div> -->
+    <div class="highlight-clean" style="padding-bottom: 20px;">
+        <div class="container" style="padding-bottom: 10px; max-width: 1100px;">
+            <h1 class="text-center"><b>FlashTex: Fast Relightable Mesh Texturing with LightControlNet</b></h1>
+        </div>
+        <div class="container" style="max-width: 1100px;">
+            <div class="row authors" style="padding-bottom: 25px; padding-left: 0px;">
+                <h5 class="text-center"><a class="text-center" href="https://dunbar12138.github.io/">Kangle Deng</a><sup
+                        style="padding-right: 25px;">2</sup></h5>
+                <h5 class="text-center"><a class="text-center" href="">Timothy Omernick</a><sup
+                        style="padding-right: 25px;">1</sup></h5>
+                <h5 class="text-center"><a href="">Alexander Weiss</a><sup style="padding-right: 25px;">1</sup></h5>
+                <h5 class="text-center"><a class="text-center" href="https://www.cs.cmu.edu/~deva/">Deva Ramanan</a><sup
+                        style="padding-right: 25px;">2</sup></h5>
+                <h5 class="text-center"><a class="text-center" href="https://www.cs.cmu.edu/~junyanz/">Jun-Yan
+                        Zhu</a><sup style="padding-right: 25px;">2</sup></h5>
+                <h5 class="text-center"><a class="text-center" href="">Tinghui Zhou</a><sup
+                        style="padding-right: 25px;">1</sup></h5>
+                <h5 class="text-center"><a class="text-center" href="">Maneesh Agrawala</a><sup
+                        style="padding-right: 25px;">1,3</sup></h5>
+            </div>
+            <div class="row authors institute">
+                <div class="col-sm-12">
+                    <h4 class="text-center"><sup>1</sup> Roblox &nbsp&nbsp <sup>2</sup> Carnegie Mellon University
+                        &nbsp&nbsp <sup>3</sup> Stanford University
+                    </h4>
+                </div>
+            </div>
+            <!-- <div class="row authors institute">
+                <div class="col-sm-12">
+                    <h3 class="text-center"><strong>ACM Transactions on Graphics (TOG), SIGGRAPH Asia 2023</strong>
+                    </h3>
+                </div>
+            </div> -->
+        </div>
+        <div class="container" style="max-width: 900px;">
+            <div class="row authors institute">
+                <div class="col-sm-12">
+                    <!-- <h3 class="text-center"><strong>CVPR 2024 Submission #3763</strong>
+                    </h3> -->
+                </div>
+            </div>
+        </div>
+
+
+        <div class="buttons" style="margin-bottom: 8px;">
+            <a class="btn btn-light" role="button" href="">
+                <svg style="width:24px;height:24px;margin-left:-12px;margin-right:12px" viewBox="0 0 24 24">
+                    <path fill="currentColor"
+                        d="M16 0H8C6.9 0 6 .9 6 2V18C6 19.1 6.9 20 8 20H20C21.1 20 22 19.1 22 18V6L16 0M20 18H8V2H15V7H20V18M4 4V22H20V24H4C2.9 24 2 23.1 2 22V4H4M10 10V12H18V10H10M10 14V16H15V14H10Z">
+                    </path>
+                </svg>arXiv
+            </a>
+            <a class="btn btn-light" role="button" href="">
+                <svg style="width:24px;height:24px;margin-left:-12px;margin-right:12px" width="24px" height="24px"
+                    viewBox="0 0 475 531">
+                    <path fill="currentColor"
+                        d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z">
+                    </path>
+                </svg>
+                Code (Coming soon)
+            </a>
+        </div>
+
+
+    </div>
+
+    <!-- <div class="row justify-content-sm-center">
+          
+
+        <a class="sm-1 mx-1 btn btn-primary" href="index.html" role="button">Our Results</a>
+        <a class="sm-1 mx-1 btn btn-primary" href="./htmls/comparison_non_relightable.html" role="button">Comparison (non-relightable)</a>
+        <a class="sm-1 mx-1 btn btn-primary" href="./htmls/comparison_relightable.html" role="button">Comparison (relightable)</a>
+
+    </div>		 -->
+
+
+    <!-- <hr class="divider"> -->
+    <hr style="max-width: 1400px;">
+    <div class="container" style="max-width: 1400px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-center" style="margin-bottom: 30px; margin-top: 10px;">Abstract</h2>
+                <p>
+                    Manually creating textures for 3D meshes is time-consuming, even for expert visual content creators.
+                    We propose a fast approach for automatically texturing an input 3D mesh based on a user-provided
+                    text prompt. Importantly, our approach disentangles lighting from surface material/reflectance in
+                    the resulting texture so that the mesh can be properly relit and rendered in any lighting
+                    environment. Our method introduces LightControlNet, a new text-to-image model based on the
+                    ControlNet architecture, that allows the specification of the desired lighting as a conditioning
+                    image to the model. Our text-to-texture pipeline then constructs the texture in two stages. The
+                    first stage produces a sparse set of visually consistent reference views of the mesh using
+                    LightControlNet. The second stage applies a texture optimization based on Score Distillation
+                    Sampling (SDS) that works with LightControlNet to increase the texture quality while disentangling
+                    surface material from lighting. We show that this pipeline is significantly faster than previous
+                    text-to-texture methods, while producing high-quality and relightable textures.
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- <hr class="divider"> -->
+    <hr style="max-width: 1400px;">
+    <div class="container" style="max-width: 1400px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-center" style="margin-bottom: 30px; margin-top: 10px;">Our Results (Fixed object,
+                    Rotating lighting)</h2>
+                <p style="margin-bottom: 30px; margin-bottom: 30px;">
+                    Below we show a grid of pairs
+                    of input text prompt <span style="font-weight:900">(top)</span> and their corresponding generated
+                    textures <span style="font-weight:900">(bottom)</span>. In the examples below, <span
+                        style="font-weight:900">the lighting is rotating while the object is fixed </span>.
+                </p>
+                <p></p>
+                <p></p>
+                <!-- <div id="singleconceptscroll" class="containershadow"
+                    style="overflow-y:scroll; max-width: 1400px; max-height: 1300px;"> -->
+                <div id="singleconceptscroll" class="containershadow"
+                    style="overflow-y:scroll; max-width: 1400px; max-height: 1350px;">
+
+
+                    <div class="row">
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <!-- <div class="row text-center"> -->
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">
+                                    "Doc_Martens_Boot"
+                                </p>
+
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/obj_test_69_rotate_light/2c612d64e86848fb8af193018b8788a4_Doc_Martens_Boot.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <!-- <div class="row text-center"> -->
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Wooden Boat"
+                                </p>
+
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/obj_test_69_rotate_light/8b734b54064f43fbaebb9467af1909e8_wooden_boat.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <!-- <div class="row text-center"> -->
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"ballet_costume"
+                                </p>
+
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/obj_test_69_rotate_light/9f7328bcb0fd442d8943ab3c70c94133_ballet_costume__dance__dress__woman__ballerina.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <!-- <div class="row text-center"> -->
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">
+                                    "Fairy_lantern__adventure"
+                                </p>
+
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/obj_test_69_rotate_light/24e0bca95f0444148aa647258bb50e2f_Fairy_lantern__adventure.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <!-- <div class="row text-center"> -->
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">
+                                    "A_sculpture_of_horse_without_rider"
+                                </p>
+
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/obj_test_69_rotate_light/74cf4075c21941ceb263374cf253fa8b_A_sculpture_of_horse_without_rider.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <!-- <div class="row text-center"> -->
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">
+                                    "a_dog_head_statue"
+                                </p>
+
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/obj_test_69_rotate_light/83c596263b9a48c58ffa7e404b89cc16_a_dog_head_statue.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <!-- <div class="row text-center"> -->
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"stylish_sweater"
+                                </p>
+
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/obj_test_69_rotate_light/7075ff0a93d14fdd8cf34121f0897777_stylish_sweater.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <!-- <div class="row text-center"> -->
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">
+                                    "futuristic_helmet"
+                                </p>
+
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/obj_test_69_rotate_light/79764d738d2349b68fc7f60dd3d5006c_futuristic_helmet__cyborg__metal__robot.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <!-- <div class="row text-center"> -->
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">
+                                    "Suede_Womens_Heeled_Boot"
+                                </p>
+
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/obj_test_69_rotate_light/516145ceb6df4f3b81bd1aaf62f6a857_Suede_Womens_Heeled_Boot.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <!-- <div class="row text-center"> -->
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">
+                                    "Suede_Womens_Heeled_Boot"
+                                </p>
+
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/obj_test_69_rotate_light/516145ceb6df4f3b81bd1aaf62f6a857_Suede_Womens_Heeled_Boot.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <!-- <div class="row text-center"> -->
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"horse_saddle"
+                                </p>
+
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/obj_test_69_rotate_light/a61e7938eef945f082c4fb430fe855f4_horse_saddle__leather__craft__sewing__tanning__20th-century.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <!-- <div class="row text-center"> -->
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"purple_scallop"
+                                </p>
+
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/obj_test_69_rotate_light/a4310c1d5ac24740a85dbbe882ee9911_purple_scallop__purple_shell__aquatic__shellfish.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <!-- <div class="row text-center"> -->
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"hiking_boot"
+                                </p>
+
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/obj_test_69_rotate_light/b2a310c14db34abe87b1e0ba3be0b1c3_hiking_boot.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <!-- <div class="row text-center"> -->
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">
+                                    "Camera_Super_8_Braun_Nizo_S8T"
+                                </p>
+
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/obj_test_69_rotate_light/b311404c84e847e68b5932249029f915_Camera_Super_8_Braun_Nizo_S8T__cinema.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <!-- <div class="row text-center"> -->
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Thorsberg_tunic"
+                                </p>
+
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/obj_test_69_rotate_light/e5f37c5f821948628c5645a1d41b2afc_Thorsberg_tunic__clothes.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <hr class="divider"> -->
+    <hr style="max-width: 1400px;">
+    <div class="container" style="max-width: 1400px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-center" style="margin-bottom: 30px; margin-top: 10px;">Our Results (Fixed lighting,
+                    Rotating object)</h2>
+                <p style="margin-bottom: 30px; margin-bottom: 30px;">
+                    We also render the results with rotating objects and fixed lighting.
+
+                    <!-- For viewing the results in full screen view please refer to our <a href="./our_results.html">Gallery
+                        (Our Results)</a> page. -->
+                </p>
+                <p></p>
+                <p></p>
+                <!-- <div id="singleconceptscroll" class="containershadow"
+                    style="overflow-y:scroll; max-width: 1400px; max-height: 1300px;"> -->
+                <div id="singleconceptscroll" class="containershadow"
+                    style="overflow-y:scroll; max-width: 1400px; max-height: 1350px;">
+
+
+                    <div class="row">
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <!-- <div class="row text-center"> -->
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"MOPED 1978 Puch
+                                    Moped Hero, motorcycle"
+                                </p>
+
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/MOPED_1978_Puch_Moped_Hero__motorcycle_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+
+                            </div>
+
+                            <!-- </div> -->
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <!-- <div class="row text-center"> -->
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Hiking boot"
+                                </p>
+
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/hiking_boot_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+
+
+
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Medieval
+                                    windmill"
+                                </p>
+
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/Medieval_windmill_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+
+
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Nimbus 2000,
+                                    harry potter broom, magic"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/Nimbus_2000__harry_potter_broom__magic_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Pruning shears"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/Pruning_shears_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <!-- <div class="column px-4" style="margin: auto;width: 33%;">
+                                <div class="row text-center"
+                                    style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    
+                                    <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"evergreen toad, amphibian, frogs"
+                                    </p>
+                                        <video autoplay="autoplay" controls="controls" loop="loop" muted="muted" src="all_results/objaverse/9ef08bf409b5486d972a239f5123852c_ evergreen_toad__amphibian__frogs_rgb360.mp4" style="width: 100%" type="video/mp4"></video>
+                                </div>
+                            </div> -->
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Fairy lantern,
+                                    adventure"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/Fairy_lantern__adventure_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"A sculpture of
+                                    horse without rider"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/A_sculpture_of_horse_without_rider_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"doll boots,
+                                    leather, heels"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/doll_boots__leather__heels_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"perisphinctes,
+                                    cretaceous, fossils, ammonite"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/perisphinctes__cretaceous__fossils__ammonite_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"futuristic
+                                    helmet, cyborg, metal, robot"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/futuristic_helmet__cyborg__metal__robot_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Suede Womens
+                                    Heeled Boot"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/Suede_Womens_Heeled_Boot_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Stylish_Boot"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/Stylish_Boot_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"horse saddle,
+                                    leather, craft, sewing, tanning, 20th-century"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/horse_saddle__leather__craft__sewing__tanning__20th-century_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"purple scallop,
+                                    purple shell, aquatic, shellfish"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/purple_scallop__purple_shell__aquatic__shellfish_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"vintage cash
+                                    register"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/vintage_cash_register_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"a sculpture of
+                                    monkey"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/a_sculpture_of_monkey_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"LAV-25, tank"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/LAV-25__tank_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Doc Martens
+                                    Boot"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/Doc_Martens_Boot_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Wooden boat"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/wooden_boat_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Ballet costume,
+                                    dance dress, woman, ballerina"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/ballet_costume__dance__dress__woman__ballerina_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Russian Antitank
+                                    rifle, PTRD-1941, 14.5_mm, rifle, gun"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/Russian_Antitank_rifle__PTRD-1941__14.5_mm__rifle__gun_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Peony flower"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/peony_flower_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Ranger bow"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/ranger_bow_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Camra 16 mm,
+                                    Paillard Bolex, H16 REX-5, cinema, camera"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/Camra_16_mm__Paillard_Bolex__H16_REX-5__cinema__camera_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Abandoned Jeep
+                                    Gladiator, crashed, jeep, vehicle"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/Abandoned_Jeep_Gladiator__crashed__jeep__vehicle_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Casual gothic
+                                    outfit, fashion, stylish, clothes"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/casual_gothic_outgif__fashion__stylish__clothes_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Moon necklace"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/moon_necklace_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Pine cone"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/pine_cone_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Thorsberg tunic,
+                                    clothes"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/comparison/ours/Thorsberg_tunic__clothes_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"A stylish
+                                    jacket"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/accessories/jacket_with_hat_ A_stylish_jacket__detailed__hd_rgb360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"A vintage space
+                                    explorer jacket with a matching helmet, weathered and covered in cosmic dust"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/accessories/jacket_with_hat_ A_vintage_space_explorer_jacket_with_a_matching_helmet__weathered_and_covered_in_cosmic_dust__detailed__hd_rgb360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Jacket made from
+                                    the fabrics of a ghost ship phantasmal and shimmering"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/accessories/jacket_with_hat_ Jacket_made_from_the_fabrics_of_a_ghost_ship__phantasmal_and_shimmering__detailed__hd_rgb360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Jacket that
+                                    gives the impression of a swirling nebula"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/accessories/jacket_with_hat_ Jacket_that_gives_the_impression_of_a_swirling_nebula__detailed__hd_rgb360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"an astronaut
+                                    fishman"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/avatars/Fishman_ an_astronaut_fishman__detailed__best_quality_rgb360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"coral reef
+                                    guardian"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/avatars/Fishman_ coral_reef_guardian__high_detail_rgb360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"deep sea diver"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/avatars/Fishman_ deep_sea_diver__high_detail_rgb360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"mermaid warrior,
+                                    trending on artstation"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/avatars/Fishman_ mermaid_warrior__trending_on_artstation_rgb360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <!-- <div class="column px-4" style="margin: auto;width: 33%;">
+                                <div class="row text-center"
+                                    style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    
+                                    <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"an astronaut mouse"
+                                    </p>
+                                        <video autoplay="autoplay" controls="controls" loop="loop" muted="muted" src="all_results/avatars/GoblinCharacter_ an_astronaut_mouse__detailed__best_quality_rgb360.mp4" style="width: 100%" type="video/mp4"></video>
+                                </div>
+                            </div> -->
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"cave dweller,
+                                    high detail"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/avatars/GoblinCharacter_ cave_dweller__high_detail_rgb360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Hylian goblin
+                                    soldier from legend of zelda"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/avatars/GoblinCharacter_ hylian_goblin_soldier_from_legend_of_zelda__trending_on_artstation_rgb360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Dystopian rebel
+                                    leader with intricate tattoos"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/avatars/Roxie_ Dystopian_rebel_leader_with_intricate_tattoos__trending_on_ArtStation_rgb360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <!-- <div class="column px-4" style="margin: auto;width: 33%;">
+                                <div class="row text-center"
+                                    style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    
+                                    <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Island guardian with woven armor and tribal paint"
+                                    </p>
+                                        <video autoplay="autoplay" controls="controls" loop="loop" muted="muted" src="all_results/avatars/Roxie_ Island_guardian_with_woven_armor_and_tribal_paint__high_detail_rgb360.mp4" style="width: 100%" type="video/mp4"></video>
+                                </div>
+                            </div> -->
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Space-faring
+                                    explorer in an advanced suit"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/avatars/Roxie_ Space-faring_explorer_in_an_advanced_suit__trending_on_ArtStation_rgb360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"an astronaut
+                                    wolf"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/avatars/TribalWolf_ an_astronaut_wolf__detailed__best_quality_rgb360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Hylian wolf
+                                    soldier from legend of zelda"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/avatars/TribalWolf_ hylian_wolf_soldier_from_legend_of_zelda__trending_on_artstation_rgb360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Japanese samurai
+                                    wolf"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/avatars/TribalWolf_ japanese_samurai_wolf__trending_on_artstation_rgb360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Pirate tribal
+                                    wolf"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="all_results/avatars/TribalWolf_ pirate_tribal_wolf__trending_on_artstation_rgb360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+
+
+
+
+
+                </div>
+                <p></p>
+                <p></p>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <hr style="max-width: 1400px;">
+    <div class="container" style="max-width: 1400px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-center" style="margin-bottom: 30px; margin-top: 10px;">Comparison with relightable
+                    baseline</h2>
+                <p style="margin-bottom: 30px; margin-bottom: 30px;">
+                    We render our and Fantasia3D's results using the same fixed lighting with the object rotating. We
+                    also render an untextured mesh (half metal, half smooth material) with the same lighting to show the
+                    reference lighting environment.
+                </p>
+
+                <div id="singleconceptscroll" class="containershadow"
+                    style="overflow-y:scroll; max-width: 1400px; max-height: 1350px;">
+
+                    <div class="row">
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-size: 24px; margin-top: 5px; font-weight:900">Ours
+                                    <br>
+                                    [4 mins]
+                                </p>
+                            </div>
+                        </div>
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-size: 24px; margin-top: 5px; font-weight:900">Fantasia3D
+                                    <br>
+                                    [30 mins]
+                                </p>
+                            </div>
+                        </div>
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-size: 24px; margin-top: 5px; font-weight:900">Untextured Mesh (reference
+                                    lighting)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"A sculpture of
+                                    horse without rider"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/A_sculpture_of_horse_without_rider_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"A sculpture of
+                                    horse without rider"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/fantasia3D/A_sculpture_of_horse_without_rider_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"A sculpture of
+                                    horse without rider"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/lighting/A_sculpture_of_horse_without_rider_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Camra 16 mm,
+                                    Paillard Bolex, H16 REX-5, cinema, camera"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/Camra_16_mm__Paillard_Bolex__H16_REX-5__cinema__camera_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Camra 16 mm,
+                                    Paillard Bolex, H16 REX-5, cinema, camera"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/fantasia3D/Camra_16_mm__Paillard_Bolex__H16_REX-5__cinema__camera_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Camra 16 mm,
+                                    Paillard Bolex, H16 REX-5, cinema, camera"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/lighting/Camra_16_mm__Paillard_Bolex__H16_REX-5__cinema__camera_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Doc Martens
+                                    Boot"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/Doc_Martens_Boot_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Doc Martens
+                                    Boot"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/fantasia3D/Doc_Martens_Boot_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Doc Martens
+                                    Boot"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/lighting/Doc_Martens_Boot_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"MOPED 1978 Puch
+                                    Moped Hero, motorcycle"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/MOPED_1978_Puch_Moped_Hero__motorcycle_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"MOPED 1978 Puch
+                                    Moped Hero, motorcycle"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/fantasia3D/MOPED_1978_Puch_Moped_Hero__motorcycle_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"MOPED 1978 Puch
+                                    Moped Hero, motorcycle"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/lighting/MOPED_1978_Puch_Moped_Hero__motorcycle_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Medieval
+                                    windmill"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/Medieval_windmill_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Medieval
+                                    windmill"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/fantasia3D/Medieval_windmill_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Medieval
+                                    windmill"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/lighting/Medieval_windmill_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Stylish Boot"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/Stylish_Boot_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Stylish Boot"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/fantasia3D/Stylish_Boot_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Stylish Boot"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/lighting/Stylish_Boot_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Thorsberg tunic,
+                                    clothes"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/Thorsberg_tunic__clothes_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Thorsberg tunic,
+                                    clothes"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/fantasia3D/Thorsberg_tunic__clothes_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Thorsberg tunic,
+                                    clothes"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/lighting/Thorsberg_tunic__clothes_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"a sculpture of
+                                    monkey"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/a_sculpture_of_monkey_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"a sculpture of
+                                    monkey"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/fantasia3D/a_sculpture_of_monkey_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"a sculpture of
+                                    monkey"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/lighting/a_sculpture_of_monkey_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"ballet costume,
+                                    dance, dress, woman, ballerina"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/ballet_costume__dance__dress__woman__ballerina_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"ballet costume,
+                                    dance, dress, woman, ballerina"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/fantasia3D/ballet_costume__dance__dress__woman__ballerina_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"ballet costume,
+                                    dance, dress, woman, ballerina"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/lighting/ballet_costume__dance__dress__woman__ballerina_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"doll boots,
+                                    leather, heels"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/doll_boots__leather__heels_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"doll boots,
+                                    leather, heels"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/fantasia3D/doll_boots__leather__heels_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"doll boots,
+                                    leather, heels"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/lighting/doll_boots__leather__heels_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"futuristic
+                                    helmet, cyborg, metal, robot"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/futuristic_helmet__cyborg__metal__robot_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"futuristic
+                                    helmet, cyborg, metal, robot"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/fantasia3D/futuristic_helmet__cyborg__metal__robot_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"futuristic
+                                    helmet, cyborg, metal, robot"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/lighting/futuristic_helmet__cyborg__metal__robot_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"hiking boot"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/hiking_boot_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"hiking boot"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/fantasia3D/hiking_boot_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"hiking boot"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/lighting/hiking_boot_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"horse saddle,
+                                    leather, craft, sewing, tanning, 20th-century"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/horse_saddle__leather__craft__sewing__tanning__20th-century_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"horse saddle,
+                                    leather, craft, sewing, tanning, 20th-century"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/fantasia3D/horse_saddle__leather__craft__sewing__tanning__20th-century_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"horse saddle,
+                                    leather, craft, sewing, tanning, 20th-century"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/lighting/horse_saddle__leather__craft__sewing__tanning__20th-century_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"peony flower"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/peony_flower_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"peony flower"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/fantasia3D/peony_flower_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"peony flower"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/lighting/peony_flower_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"perisphinctes,
+                                    cretaceous, fossils, ammonite"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/perisphinctes__cretaceous__fossils__ammonite_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"perisphinctes,
+                                    cretaceous, fossils, ammonite"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/fantasia3D/perisphinctes__cretaceous__fossils__ammonite_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"perisphinctes,
+                                    cretaceous, fossils, ammonite"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/lighting/perisphinctes__cretaceous__fossils__ammonite_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"purple scallop,
+                                    purple shell, aquatic, shellfish"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/purple_scallop__purple_shell__aquatic__shellfish_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"purple scallop,
+                                    purple shell, aquatic, shellfish"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/fantasia3D/purple_scallop__purple_shell__aquatic__shellfish_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"purple scallop,
+                                    purple shell, aquatic, shellfish"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/lighting/purple_scallop__purple_shell__aquatic__shellfish_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"vintage cash
+                                    register"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/vintage_cash_register_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"vintage cash
+                                    register"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/fantasia3D/vintage_cash_register_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"vintage cash
+                                    register"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/lighting/vintage_cash_register_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"wooden boat"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/wooden_boat_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"wooden boat"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/fantasia3D/wooden_boat_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 33%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"wooden boat"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/lighting/wooden_boat_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <hr style="max-width: 1400px;">
+    <div class="container" style="max-width: 1400px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-center" style="margin-bottom: 30px; margin-top: 10px;">Comparison with non-relightable
+                    baselines</h2>
+                <p style="margin-bottom: 30px; margin-bottom: 30px;">
+                    Two variations of our method are compared with the non-relightable baselines. The first uses our
+                    proposed LightControlNet to generate relightable texture, while the non-relightable second employs a
+                    standard depth-guided ControlNet. All the results are placed in the same lighting environment, where
+                    the lighting is fixed while the object is rotating.
+                </p>
+
+                <div id="singleconceptscroll" class="containershadow"
+                    style="overflow-y:scroll; max-width: 1400px; max-height: 1400px">
+
+                    <div class="row">
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-size: 24px; margin-top: 5px; font-weight:900">Ours (relightable)
+                                    <br>
+                                    [4 mins]
+                                </p>
+                            </div>
+                        </div>
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-size: 24px; margin-top: 5px; font-weight:900">Ours (Non-relightable)
+                                    <br>
+                                    [2 mins]
+                                </p>
+                            </div>
+                        </div>
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-size: 24px; margin-top: 5px; font-weight:900">text2tex
+                                    <br>
+                                    [15 mins]
+                                </p>
+                            </div>
+                        </div>
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-size: 24px; margin-top: 5px; font-weight:900">TEXTure
+                                    <br>
+                                    [6 mins]
+                                </p>
+                            </div>
+                        </div>
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-size: 24px; margin-top: 5px; font-weight:900">latent-paint
+                                    <br>
+                                    [10 mins]
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"ballet costume,
+                                    dance, dress, woman, ballerina"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/ballet_costume__dance__dress__woman__ballerina_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"ballet costume,
+                                    dance, dress, woman, ballerina"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours_nonrelightable/9f7328bcb0fd442d8943ab3c70c94133_ballet_costume__dance__dress__woman__ballerina.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"ballet costume,
+                                    dance, dress, woman, ballerina"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/text2tex/9f7328bcb0fd442d8943ab3c70c94133_ballet_costume__dance__dress__woman__ballerina.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"ballet costume,
+                                    dance, dress, woman, ballerina"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/TEXTurePaper/9f7328bcb0fd442d8943ab3c70c94133_ballet_costume__dance__dress__woman__ballerina.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"ballet costume,
+                                    dance, dress, woman, ballerina"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/latent-nerf/9f7328bcb0fd442d8943ab3c70c94133_ballet_costume__dance__dress__woman__ballerina.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"horse saddle,
+                                    leather, craft, sewing, tanning, 20th-century"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/horse_saddle__leather__craft__sewing__tanning__20th-century_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"horse saddle,
+                                    leather, craft, sewing, tanning, 20th-century"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours_nonrelightable/a61e7938eef945f082c4fb430fe855f4_horse_saddle__leather__craft__sewing__tanning__20th-century.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"horse saddle,
+                                    leather, craft, sewing, tanning, 20th-century"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/text2tex/a61e7938eef945f082c4fb430fe855f4_horse_saddle__leather__craft__sewing__tanning__20th-century.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"horse saddle,
+                                    leather, craft, sewing, tanning, 20th-century"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/TEXTurePaper/a61e7938eef945f082c4fb430fe855f4_horse_saddle__leather__craft__sewing__tanning__20th-century.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"horse saddle,
+                                    leather, craft, sewing, tanning, 20th-century"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/latent-nerf/a61e7938eef945f082c4fb430fe855f4_horse_saddle__leather__craft__sewing__tanning__20th-century.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"hiking boot"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/hiking_boot_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"hiking boot"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours_nonrelightable/b2a310c14db34abe87b1e0ba3be0b1c3_hiking_boot.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"hiking boot"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/text2tex/b2a310c14db34abe87b1e0ba3be0b1c3_hiking_boot.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"hiking boot"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/TEXTurePaper/b2a310c14db34abe87b1e0ba3be0b1c3_hiking_boot.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"hiking boot"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/latent-nerf/b2a310c14db34abe87b1e0ba3be0b1c3_hiking_boot.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"MOPED 1978 Puch
+                                    Moped Hero, motorcycle"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/MOPED_1978_Puch_Moped_Hero__motorcycle_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"MOPED 1978 Puch
+                                    Moped Hero, motorcycle"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours_nonrelightable/b6c212a12d85425bb166f43cd3d70248_MOPED_1978_Puch_Moped_Hero__motorcycle.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"MOPED 1978 Puch
+                                    Moped Hero, motorcycle"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/text2tex/b6c212a12d85425bb166f43cd3d70248_MOPED_1978_Puch_Moped_Hero__motorcycle.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"MOPED 1978 Puch
+                                    Moped Hero, motorcycle"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/TEXTurePaper/b6c212a12d85425bb166f43cd3d70248_MOPED_1978_Puch_Moped_Hero__motorcycle.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"MOPED 1978 Puch
+                                    Moped Hero, motorcycle"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/latent-nerf/b6c212a12d85425bb166f43cd3d70248_MOPED_1978_Puch_Moped_Hero__motorcycle.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"vintage cash
+                                    register"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/vintage_cash_register_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"vintage cash
+                                    register"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours_nonrelightable/be69291f061e4aeb817fc383338a8368_vintage_cash_register.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"vintage cash
+                                    register"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/text2tex/be69291f061e4aeb817fc383338a8368_vintage_cash_register.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"vintage cash
+                                    register"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/TEXTurePaper/be69291f061e4aeb817fc383338a8368_vintage_cash_register.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"vintage cash
+                                    register"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/latent-nerf/be69291f061e4aeb817fc383338a8368_vintage_cash_register.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"pine cone"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/pine_cone_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"pine cone"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours_nonrelightable/c8dbf7a2e76e4fd48b3befff8b8a3e5f_pine_cone.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"pine cone"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/text2tex/c8dbf7a2e76e4fd48b3befff8b8a3e5f_pine_cone.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"pine cone"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/TEXTurePaper/c8dbf7a2e76e4fd48b3befff8b8a3e5f_pine_cone.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"pine cone"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/latent-nerf/c8dbf7a2e76e4fd48b3befff8b8a3e5f_pine_cone.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Thorsberg tunic,
+                                    clothes"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/Thorsberg_tunic__clothes_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Thorsberg tunic,
+                                    clothes"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours_nonrelightable/e5f37c5f821948628c5645a1d41b2afc_Thorsberg_tunic__clothes.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Thorsberg tunic,
+                                    clothes"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/text2tex/e5f37c5f821948628c5645a1d41b2afc_Thorsberg_tunic__clothes.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Thorsberg tunic,
+                                    clothes"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/TEXTurePaper/e5f37c5f821948628c5645a1d41b2afc_Thorsberg_tunic__clothes.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Thorsberg tunic,
+                                    clothes"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/latent-nerf/e5f37c5f821948628c5645a1d41b2afc_Thorsberg_tunic__clothes.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"LAV-25, tank"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/LAV-25__tank_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"LAV-25, tank"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours_nonrelightable/1b0619308be640a2b33a16cc898c8dfc_LAV-25__tank.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"LAV-25, tank"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/text2tex/1b0619308be640a2b33a16cc898c8dfc_LAV-25__tank.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"LAV-25, tank"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/TEXTurePaper/1b0619308be640a2b33a16cc898c8dfc_LAV-25__tank.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"LAV-25, tank"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/latent-nerf/1b0619308be640a2b33a16cc898c8dfc_LAV-25__tank.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Fairy lantern,
+                                    adventure"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/Fairy_lantern__adventure_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Fairy lantern,
+                                    adventure"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours_nonrelightable/24e0bca95f0444148aa647258bb50e2f_Fairy_lantern__adventure.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Fairy lantern,
+                                    adventure"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/text2tex/24e0bca95f0444148aa647258bb50e2f_Fairy_lantern__adventure.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Fairy lantern,
+                                    adventure"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/TEXTurePaper/24e0bca95f0444148aa647258bb50e2f_Fairy_lantern__adventure.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Fairy lantern,
+                                    adventure"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/latent-nerf/24e0bca95f0444148aa647258bb50e2f_Fairy_lantern__adventure.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Stylish Boot"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/Stylish_Boot_rgb_360.mp4" style="width: 100%"
+                                    type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Stylish Boot"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours_nonrelightable/2691691810b440b996905ec5be9e1ede_Stylish_Boot.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Stylish Boot"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/text2tex/2691691810b440b996905ec5be9e1ede_Stylish_Boot.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Stylish Boot"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/TEXTurePaper/2691691810b440b996905ec5be9e1ede_Stylish_Boot.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Stylish Boot"
+                                </p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/latent-nerf/2691691810b440b996905ec5be9e1ede_Stylish_Boot.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Medieval
+                                    windmill"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours/Medieval_windmill_rgb_360.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Medieval
+                                    windmill"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/ours_nonrelightable/2f73dc8657c44f6889426df920463265_Medieval_windmill.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Medieval
+                                    windmill"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/text2tex/2f73dc8657c44f6889426df920463265_Medieval_windmill.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Medieval
+                                    windmill"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/TEXTurePaper/2f73dc8657c44f6889426df920463265_Medieval_windmill.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="column px-4" style="margin: auto;width: 20%;">
+                            <div class="row text-center"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p style="font-family: Chalkduster; font-size: 16px; margin-top: 5px;">"Medieval
+                                    windmill"</p>
+                                <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
+                                    src="./all_results/comparison/latent-nerf/2f73dc8657c44f6889426df920463265_Medieval_windmill.mp4"
+                                    style="width: 100%" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <hr style="max-width: 1400px;">
+    <div class="container" style="max-width: 1400px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-left" style="margin-bottom: 30px; margin-top: 10px;">Citation</h2>
+                <code>
+                    <!-- @inproceedings{mahapatra2023synthesizing,<br>
+                    &nbsp; title={Text-Guided Synthesis of Eulerian Cinemagraphs},<br>
+                    &nbsp; author={Mahapatra, Aniruddha and Siarohin, Aliaksandr and Lee, Hsin-Ying and Tulyakov, Sergey and Zhu, Jun-Yan},<br>
+                    &nbsp; journal={arXiv preprint arXiv:2307.03190},<br>
+                    &nbsp; year   = {2023},<br>} -->
+                </code>
+
+            </div>
+        </div>
+    </div>
+
+    <hr style="max-width: 1400px;">
+    <div class="container" style="max-width: 1400px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Related and Concurrent Works</h2>
+                <h5>
+                    <ul>
+                        <li>Rui Chen*, Yongwei Chen*, Ningxin Jiao, Kui Jia.
+                            <a href="https://slr-sfs.github.io/"> Fantasia3D: Disentangling Geometry and Appearance for
+                                High-quality Text-to-3D Content Creation. </a>
+                            ICCV 2023.
+                        </li><br>
+
+                        <li>Xudong Xu, Zhaoyang Lyu, Xingang Pan, Bo Dai. <a
+                                href="https://sheldontsui.github.io/projects/Matlaber">
+                                MATLABER: Material-Aware Text-to-3D via LAtent BRDF auto-EncodeR.</a> ArXiv 2023.</li>
+                        <br>
+
+                        <li>Yuan-Chen Guo, Ying-Tian Liu, Vikram Voleti, Ruizhi Shao, Chia-Hao Chen, Guan Luo,
+                            Zixin Zou, Chen Wang, Christian Laforte, Yan-Pei Cao, Song-Hai Zhang. <a
+                                href="https://github.com/threestudio-project/threestudio">
+                                threestudio: A unified framework for 3D content generation.</a></li><br>
+
+                    </ul>
+                </h5>
+            </div>
+        </div>
+    </div>
+
+    <hr style="max-width: 1400px;">
+    <div class="container" style="max-width: 1400px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-left" style="margin-bottom: 30px; margin-top: 10px;">Acknowledgements</h2>
+                <p>
+                    We thank Benjamin Akrish, Victor Zordan, Dmitry Trifonov, Derek Liu, Sheng-Yu Wang, Gaurav Parmer,
+                    Ruihan Gao, Nupur Kumari, and Sean Liu for their discussion and help. This work was done when Kangle
+                    was an intern at Roblox. We are grateful for the support from Roblox Research. The website template
+                    is taken from <a href="https://www.cs.cmu.edu/~custom-diffusion/">Custom
+                        Diffusion</a> (which was built on<a href="https://dreamfusion3d.github.io/index.html">
+                        DreamFusion</a>'s project page).
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script src="images/polyfill.js"></script>
+    <script src="images/yall.js"></script>
+    <script>
+        yall(
+            {
+                observeChanges: true
+            }
+        );
+    </script>
+    <script src="images/scripts.js"></script>
+    <script src="images/jquery.min.js"></script>
+    <script src="images/bootstrap.bundle.min.js"></script>
+    <script src="images/webflow.fd002feec.js"></script>
+
+    <!-- Import the component -->
+
+
+
+</body>
+
+</html>
