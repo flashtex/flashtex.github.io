@@ -154,11 +154,12 @@
     </div>		 -->
 
     <div class="container" style="max-width: 1400px;">
+        <p style="font-size:19px";> <span
+            style="font-weight:900">FlashTex</span> textures an input 3D mesh given a user-provided text prompt. Notably, our generated texture can be relit properly in different lighting environments. </p>
         <video autoplay="autoplay" controls="controls" loop="loop" muted="muted"
                                     src="rsc/figures/teaser.mp4"
                                     style="width: 100%" type="video/mp4"></video>
-        <p style="font-size:19px";> <span
-            style="font-weight:900">FlashTex</span> textures an input 3D mesh given a user-provided text prompt. Notably, our generated texture can be relit properly in different lighting environments. </p>
+        
             <!--  -->
     </div>
 
@@ -220,6 +221,44 @@
             </div>
         </div>
     </div>
+
+    <hr style="max-width: 1400px;">
+    <div class="container" style="max-width: 1400px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-center" style="margin-bottom: 30px; margin-top: 10px;">LightControlNet</h2>
+                <p>
+                    (a) Our <span style="font-weight:900">LightControlNet</span> generates images with controlled lighting by a conditioning image that specifies desired lighting \( L \) for a view \( C \) of a 3D mesh. To form the conditioning image, we first render the mesh with the desired \( L \) and \( C \) using three different materials: (1) non-metal, not smooth, (2) half-metal, half-smooth, and (3) pure metal, smooth, and then combine the renderings into a single three-channel image. (b) Our LightControlNet is trained using paired data derived from Objaverse. Each training object is rendered twice using the same pose and lighting - once with its original texture and material, and again getting a conditioning image in which the original texture is replaced by our condition materials. We use the associated name and tags as the text prompt. (c) To illustrate the generalizability of our LightControlNet, we present several examples of the same shape under varying lighting conditions and text prompts.
+                </p>
+                <p></p>
+                <p></p>
+                <img src="./rsc/figures/fig_illum_control_v2.jpg" style="width: 100%;" />
+                <p></p>
+                <p></p>
+
+            </div>
+        </div>
+    </div>
+
+    <hr style="max-width: 1400px;">
+    <div class="container" style="max-width: 1400px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-center" style="margin-bottom: 30px; margin-top: 10px;">Multi-View Visual Prompting</h2>
+                <p>
+                    In stage 1 of our pipeline, we use our LightControlNet diffusion model to generate four visually consistent canonical views of the mesh under fixed lighting. (a) However, when we independently input four canonical conditioning images to LightControlNet, it generates four very different appearances and styles even with a fixed random seed. (b) When we concatenate the four images into a \( 2\times 2\) grid and pass them as a single image into LightControlNet, it produces a far more consistent appearance and style. We suspect this property arises from the presence of similar training data samples -- grid-organized sets depicting the same object -- in Stable Diffusion's training set.
+                </p>
+                <p></p>
+                <p></p>
+                <img src="./rsc/figures/fig_character_sheet.jpg" style="width: 100%;" />
+                <p></p>
+                <p></p>
+
+            </div>
+        </div>
+    </div>
+
+
 
     <!-- <hr class="divider"> -->
     <hr style="max-width: 1400px;">
